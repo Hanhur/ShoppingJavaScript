@@ -588,8 +588,8 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Главная страница
 parcelHelpers.export(exports, "getMainPage", ()=>getMainPage);
-var _productCardJs = require("../components/productCard.js");
-var _mainTitleJs = require("../components/mainTitle.js");
+var _productCardJs = require("../components/productCard/productCard.js");
+var _mainTitleJs = require("../components/mainTitle/mainTitle.js");
 function getMainPage() {
     const page = document.createElement("div");
     page.classList.add("page", "main-page", "container");
@@ -601,12 +601,26 @@ function getMainPage() {
     return page;
 }
 
-},{"../components/productCard.js":"6onfN","../components/mainTitle.js":"1BNwr","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6onfN":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../components/mainTitle/mainTitle.js":"ki5if","../components/productCard/productCard.js":"9WzTu"}],"ki5if":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+// Создаем главный заголовок
+parcelHelpers.export(exports, "getMainTitle", ()=>getMainTitle);
+var _mainTitleCss = require("./mainTitle.css");
+function getMainTitle(text) {
+    const title = document.createElement("h1");
+    title.classList.add("main-title");
+    title.textContent = text;
+    return title;
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./mainTitle.css":"8xezA"}],"8xezA":[function() {},{}],"9WzTu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Карточка товара
 parcelHelpers.export(exports, "getProductCard", ()=>getProductCard);
-var _mainJs = require("../main.js");
+var _mainJs = require("../../main.js");
+var _productCardCss = require("./productCard.css");
 function getProductCard(title, price) {
     const item = document.createElement("li");
     item.classList.add("product-list__item");
@@ -630,6 +644,6 @@ function getProductCard(title, price) {
     return item;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../main.js":"1SICI"}]},["7jsWq"], null, "parcelRequire9a08")
+},{"../../main.js":"1SICI","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./productCard.css":"8FtH3"}],"8FtH3":[function() {},{}]},["7jsWq"], null, "parcelRequirec8b3")
 
 //# sourceMappingURL=mainPage.7b1963fc.js.map

@@ -589,10 +589,8 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "router", ()=>router);
 var _navigo = require("navigo");
 var _navigoDefault = parcelHelpers.interopDefault(_navigo);
-var _headerJs = require("./components/header.js");
-var _pageContainerJs = require("./components/pageContainer.js");
-var _mainTitleJs = require("./components/mainTitle.js");
-var _descJs = require("./components/desc.js");
+var _headerJs = require("./components/header/header.js");
+var _pageContainerJs = require("./components/pageContainer/pageContainer.js");
 const app = document.getElementById("app");
 const router = new (0, _navigoDefault.default)("/");
 const header = (0, _headerJs.getHeader)();
@@ -602,252 +600,50 @@ router.on("/", async ()=>{
     const moduleMain = await require("a69127bc709cf0be");
     const mainPage = moduleMain.getMainPage();
     pageContainer.append(mainPage);
+    header.setActiveLink("home");
 });
 router.on("/catalog", async ()=>{
     pageContainer.innerHTML = "";
     const moduleCatalog = await require("6d02dfb6265a718");
     const catalogPage = moduleCatalog.getCatalogPage();
     pageContainer.append(catalogPage);
-});
-router.on("/basket", async ()=>{
-    pageContainer.innerHTML = "";
-    const moduleBasket = await require("e2ca67c43a9996b6");
-    const basketPage = moduleBasket.getBasketPage();
-    pageContainer.append(basketPage);
+    header.setActiveLink("catalog");
 });
 router.on("/product/:title", async ({ data })=>{
     pageContainer.innerHTML = "";
     const moduleProduct = await require("919c2d9fb088c799");
     const productPage = moduleProduct.getProductPage(data.title);
     pageContainer.append(productPage);
+    header.setActiveLink();
+});
+router.on("/basket", async ()=>{
+    pageContainer.innerHTML = "";
+    const moduleBasket = await require("e2ca67c43a9996b6");
+    const basketPage = moduleBasket.getBasketPage();
+    pageContainer.append(basketPage);
+    header.setActiveLink("basket");
+});
+router.on("/order", async ()=>{
+    router.navigate("/");
+    return;
+    pageContainer.innerHTML = "";
+    const moduleOrder = await require("efbd2e0a4e037ce9");
+    const orderPage = moduleOrder.getOrderPage();
+    pageContainer.append(orderPage);
+    header.setActiveLink();
+});
+// Страница не найдена
+router.notFound(async ()=>{
+    pageContainer.innerHTML = "";
+    const moduleNotFound = await require("14c2058e88915546");
+    const notFoundPage = moduleNotFound.getNotFoundPage();
+    pageContainer.append(notFoundPage);
+    header.setActiveLink();
 });
 router.resolve();
-app.append(header, pageContainer);
+app.append(header.header, pageContainer);
 
-},{"./components/header.js":"iODzc","./components/pageContainer.js":"6pXtL","./components/mainTitle.js":"1BNwr","./components/desc.js":"7kCFx","a69127bc709cf0be":"iejFx","6d02dfb6265a718":"fbGyp","e2ca67c43a9996b6":"aNeEd","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","navigo":"fuSlc","919c2d9fb088c799":"6aDHF"}],"iODzc":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-// Создать шапку
-parcelHelpers.export(exports, "getHeader", ()=>getHeader);
-var _mainJs = require("../main.js");
-function getHeader() {
-    const header = document.createElement("header");
-    header.classList.add("header");
-    const container = document.createElement("div");
-    container.classList.add("container", "header__container");
-    const nav = document.createElement("nav");
-    nav.classList.add("navigation");
-    let link1 = document.createElement("a");
-    link1.classList.add("btn");
-    link1.href = "/";
-    link1.textContent = "\u0413\u043B\u0430\u0432\u043D\u0430\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430";
-    link1.addEventListener("click", function(event) {
-        event.preventDefault();
-        (0, _mainJs.router).navigate("/");
-    });
-    let link2 = document.createElement("a");
-    link2.classList.add("btn");
-    link2.href = "/catalog";
-    link2.textContent = "\u041A\u0430\u0442\u0430\u043B\u043E\u0433";
-    link2.addEventListener("click", function(event) {
-        event.preventDefault();
-        (0, _mainJs.router).navigate("/catalog");
-    });
-    let link3 = document.createElement("a");
-    link3.classList.add("btn");
-    link3.href = "/basket";
-    link3.textContent = "\u041A\u043E\u0440\u0437\u0438\u043D\u0430";
-    link3.addEventListener("click", function(event) {
-        event.preventDefault();
-        (0, _mainJs.router).navigate("/basket");
-    });
-    nav.append(link1, link2, link3);
-    container.append(nav);
-    header.append(container);
-    return header;
-}
-
-},{"../main.js":"1SICI","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"6pXtL":[function(require,module,exports) {
-// Контейнер для страниц
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getPageContainer", ()=>getPageContainer);
-function getPageContainer() {
-    const main = document.createElement("main");
-    main.classList.add("page-container");
-    return main;
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1BNwr":[function(require,module,exports) {
-// Создаем главный заголовок
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getMainTitle", ()=>getMainTitle);
-function getMainTitle(text) {
-    const title = document.createElement("h1");
-    title.classList.add("main-title");
-    title.textContent = text;
-    return title;
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7kCFx":[function(require,module,exports) {
-// Создаем описание
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getDesc", ()=>getDesc);
-function getDesc(text) {
-    const desc = document.createElement("p");
-    desc.classList.add("desc");
-    desc.textContent = text;
-    return desc;
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"iejFx":[function(require,module,exports) {
-module.exports = require("8c21b0c440bd611a")(require("55c6e9dc6e072e20").getBundleURL("10Mjw") + "mainPage.7b1963fc.js" + "?" + Date.now()).catch((err)=>{
-    delete module.bundle.cache[module.id];
-    throw err;
-}).then(()=>module.bundle.root("h1gyl"));
-
-},{"8c21b0c440bd611a":"61B45","55c6e9dc6e072e20":"lgJ39"}],"61B45":[function(require,module,exports) {
-"use strict";
-var cacheLoader = require("ca2a84f7fa4a3bb0");
-module.exports = cacheLoader(function(bundle) {
-    return new Promise(function(resolve, reject) {
-        // Don't insert the same script twice (e.g. if it was already in the HTML)
-        var existingScripts = document.getElementsByTagName("script");
-        if ([].concat(existingScripts).some(function isCurrentBundle(script) {
-            return script.src === bundle;
-        })) {
-            resolve();
-            return;
-        }
-        var preloadLink = document.createElement("link");
-        preloadLink.href = bundle;
-        preloadLink.rel = "preload";
-        preloadLink.as = "script";
-        document.head.appendChild(preloadLink);
-        var script = document.createElement("script");
-        script.async = true;
-        script.type = "text/javascript";
-        script.src = bundle;
-        script.onerror = function(e) {
-            var error = new TypeError("Failed to fetch dynamically imported module: ".concat(bundle, ". Error: ").concat(e.message));
-            script.onerror = script.onload = null;
-            script.remove();
-            reject(error);
-        };
-        script.onload = function() {
-            script.onerror = script.onload = null;
-            resolve();
-        };
-        document.getElementsByTagName("head")[0].appendChild(script);
-    });
-});
-
-},{"ca2a84f7fa4a3bb0":"j49pS"}],"j49pS":[function(require,module,exports) {
-"use strict";
-var cachedBundles = {};
-var cachedPreloads = {};
-var cachedPrefetches = {};
-function getCache(type) {
-    switch(type){
-        case "preload":
-            return cachedPreloads;
-        case "prefetch":
-            return cachedPrefetches;
-        default:
-            return cachedBundles;
-    }
-}
-module.exports = function(loader, type) {
-    return function(bundle) {
-        var cache = getCache(type);
-        if (cache[bundle]) return cache[bundle];
-        return cache[bundle] = loader.apply(null, arguments).catch(function(e) {
-            delete cache[bundle];
-            throw e;
-        });
-    };
-};
-
-},{}],"lgJ39":[function(require,module,exports) {
-"use strict";
-var bundleURL = {};
-function getBundleURLCached(id) {
-    var value = bundleURL[id];
-    if (!value) {
-        value = getBundleURL();
-        bundleURL[id] = value;
-    }
-    return value;
-}
-function getBundleURL() {
-    try {
-        throw new Error();
-    } catch (err) {
-        var matches = ("" + err.stack).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^)\n]+/g);
-        if (matches) // The first two stack frames will be this function and getBundleURLCached.
-        // Use the 3rd one, which will be a runtime in the original bundle.
-        return getBaseURL(matches[2]);
-    }
-    return "/";
-}
-function getBaseURL(url) {
-    return ("" + url).replace(/^((?:https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/.+)\/[^/]+$/, "$1") + "/";
-}
-// TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
-function getOrigin(url) {
-    var matches = ("" + url).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^/]+/);
-    if (!matches) throw new Error("Origin not found");
-    return matches[0];
-}
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-exports.getOrigin = getOrigin;
-
-},{}],"fbGyp":[function(require,module,exports) {
-module.exports = require("d6d14ba99d838e8c")(require("30d70832740a1131").getBundleURL("10Mjw") + "catalogPage.28119ab2.js" + "?" + Date.now()).catch((err)=>{
-    delete module.bundle.cache[module.id];
-    throw err;
-}).then(()=>module.bundle.root("87BqR"));
-
-},{"d6d14ba99d838e8c":"61B45","30d70832740a1131":"lgJ39"}],"aNeEd":[function(require,module,exports) {
-module.exports = require("541137890731ab10")(require("6b33367443d1ae69").getBundleURL("10Mjw") + "basketPage.b92afe24.js" + "?" + Date.now()).catch((err)=>{
-    delete module.bundle.cache[module.id];
-    throw err;
-}).then(()=>module.bundle.root("1pbDZ"));
-
-},{"541137890731ab10":"61B45","6b33367443d1ae69":"lgJ39"}],"fuSlc":[function(require,module,exports) {
+},{"navigo":"fuSlc","a69127bc709cf0be":"506ot","6d02dfb6265a718":"bx8x5","e2ca67c43a9996b6":"lqH5P","919c2d9fb088c799":"6Ao6o","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","efbd2e0a4e037ce9":"2vkXO","14c2058e88915546":"dK418","./components/header/header.js":"k3piG","./components/pageContainer/pageContainer.js":"ht0nH"}],"fuSlc":[function(require,module,exports) {
 !function(t, n) {
     module.exports = n();
 }("undefined" != typeof self ? self : this, function() {
@@ -1366,12 +1162,341 @@ module.exports = require("541137890731ab10")(require("6b33367443d1ae69").getBund
     }().default;
 });
 
-},{}],"6aDHF":[function(require,module,exports) {
-module.exports = require("51a2cdb2e3d74d17")(require("316a25dfe6ae0c7f").getBundleURL("10Mjw") + "productPage.8d6061f1.js" + "?" + Date.now()).catch((err)=>{
-    delete module.bundle.cache[module.id];
-    throw err;
-}).then(()=>module.bundle.root("kX2P0"));
+},{}],"506ot":[function(require,module,exports) {
+module.exports = Promise.all([
+    require("f68ed7fbdff883f3")(require("3950df5d309f8a55").getBundleURL("10Mjw") + "mainPage.f0c6ce91.css" + "?" + Date.now()).catch((err)=>{
+        delete module.bundle.cache[module.id];
+        throw err;
+    }),
+    require("bc5a377637fb9bf8")(require("3950df5d309f8a55").getBundleURL("10Mjw") + "mainPage.7b1963fc.js" + "?" + Date.now()).catch((err)=>{
+        delete module.bundle.cache[module.id];
+        throw err;
+    })
+]).then(()=>module.bundle.root("h1gyl"));
 
-},{"51a2cdb2e3d74d17":"61B45","316a25dfe6ae0c7f":"lgJ39"}]},["j2YDk","1SICI"], "1SICI", "parcelRequire9a08")
+},{"f68ed7fbdff883f3":"1MWPE","3950df5d309f8a55":"lgJ39","bc5a377637fb9bf8":"61B45"}],"1MWPE":[function(require,module,exports) {
+"use strict";
+var cacheLoader = require("ae7c5e215a4907e2");
+module.exports = cacheLoader(function(bundle) {
+    return new Promise(function(resolve, reject) {
+        // Don't insert the same link element twice (e.g. if it was already in the HTML)
+        var existingLinks = document.getElementsByTagName("link");
+        if ([].concat(existingLinks).some(function isCurrentBundle(link) {
+            return link.href === bundle && link.rel.indexOf("stylesheet") > -1;
+        })) {
+            resolve();
+            return;
+        }
+        var link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = bundle;
+        link.onerror = function(e) {
+            link.onerror = link.onload = null;
+            link.remove();
+            reject(e);
+        };
+        link.onload = function() {
+            link.onerror = link.onload = null;
+            resolve();
+        };
+        document.getElementsByTagName("head")[0].appendChild(link);
+    });
+});
+
+},{"ae7c5e215a4907e2":"j49pS"}],"j49pS":[function(require,module,exports) {
+"use strict";
+var cachedBundles = {};
+var cachedPreloads = {};
+var cachedPrefetches = {};
+function getCache(type) {
+    switch(type){
+        case "preload":
+            return cachedPreloads;
+        case "prefetch":
+            return cachedPrefetches;
+        default:
+            return cachedBundles;
+    }
+}
+module.exports = function(loader, type) {
+    return function(bundle) {
+        var cache = getCache(type);
+        if (cache[bundle]) return cache[bundle];
+        return cache[bundle] = loader.apply(null, arguments).catch(function(e) {
+            delete cache[bundle];
+            throw e;
+        });
+    };
+};
+
+},{}],"lgJ39":[function(require,module,exports) {
+"use strict";
+var bundleURL = {};
+function getBundleURLCached(id) {
+    var value = bundleURL[id];
+    if (!value) {
+        value = getBundleURL();
+        bundleURL[id] = value;
+    }
+    return value;
+}
+function getBundleURL() {
+    try {
+        throw new Error();
+    } catch (err) {
+        var matches = ("" + err.stack).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^)\n]+/g);
+        if (matches) // The first two stack frames will be this function and getBundleURLCached.
+        // Use the 3rd one, which will be a runtime in the original bundle.
+        return getBaseURL(matches[2]);
+    }
+    return "/";
+}
+function getBaseURL(url) {
+    return ("" + url).replace(/^((?:https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/.+)\/[^/]+$/, "$1") + "/";
+}
+// TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
+function getOrigin(url) {
+    var matches = ("" + url).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^/]+/);
+    if (!matches) throw new Error("Origin not found");
+    return matches[0];
+}
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+exports.getOrigin = getOrigin;
+
+},{}],"61B45":[function(require,module,exports) {
+"use strict";
+var cacheLoader = require("ca2a84f7fa4a3bb0");
+module.exports = cacheLoader(function(bundle) {
+    return new Promise(function(resolve, reject) {
+        // Don't insert the same script twice (e.g. if it was already in the HTML)
+        var existingScripts = document.getElementsByTagName("script");
+        if ([].concat(existingScripts).some(function isCurrentBundle(script) {
+            return script.src === bundle;
+        })) {
+            resolve();
+            return;
+        }
+        var preloadLink = document.createElement("link");
+        preloadLink.href = bundle;
+        preloadLink.rel = "preload";
+        preloadLink.as = "script";
+        document.head.appendChild(preloadLink);
+        var script = document.createElement("script");
+        script.async = true;
+        script.type = "text/javascript";
+        script.src = bundle;
+        script.onerror = function(e) {
+            var error = new TypeError("Failed to fetch dynamically imported module: ".concat(bundle, ". Error: ").concat(e.message));
+            script.onerror = script.onload = null;
+            script.remove();
+            reject(error);
+        };
+        script.onload = function() {
+            script.onerror = script.onload = null;
+            resolve();
+        };
+        document.getElementsByTagName("head")[0].appendChild(script);
+    });
+});
+
+},{"ca2a84f7fa4a3bb0":"j49pS"}],"bx8x5":[function(require,module,exports) {
+module.exports = Promise.all([
+    require("b817975667647616")(require("2b97a1e53f931ff2").getBundleURL("10Mjw") + "catalogPage.1304252c.css" + "?" + Date.now()).catch((err)=>{
+        delete module.bundle.cache[module.id];
+        throw err;
+    }),
+    require("71df2402959bdc4d")(require("2b97a1e53f931ff2").getBundleURL("10Mjw") + "catalogPage.28119ab2.js" + "?" + Date.now()).catch((err)=>{
+        delete module.bundle.cache[module.id];
+        throw err;
+    })
+]).then(()=>module.bundle.root("87BqR"));
+
+},{"b817975667647616":"1MWPE","2b97a1e53f931ff2":"lgJ39","71df2402959bdc4d":"61B45"}],"lqH5P":[function(require,module,exports) {
+module.exports = Promise.all([
+    require("e83f824d826e0b41")(require("ef312ad8a7c40f3d").getBundleURL("10Mjw") + "basketPage.3e478195.css" + "?" + Date.now()).catch((err)=>{
+        delete module.bundle.cache[module.id];
+        throw err;
+    }),
+    require("3daff30ee4a44abf")(require("ef312ad8a7c40f3d").getBundleURL("10Mjw") + "basketPage.b92afe24.js" + "?" + Date.now()).catch((err)=>{
+        delete module.bundle.cache[module.id];
+        throw err;
+    })
+]).then(()=>module.bundle.root("1pbDZ"));
+
+},{"e83f824d826e0b41":"1MWPE","ef312ad8a7c40f3d":"lgJ39","3daff30ee4a44abf":"61B45"}],"6Ao6o":[function(require,module,exports) {
+module.exports = Promise.all([
+    require("1e1f24517f945338")(require("1007818c3e43ed6b").getBundleURL("10Mjw") + "productPage.b4f01734.css" + "?" + Date.now()).catch((err)=>{
+        delete module.bundle.cache[module.id];
+        throw err;
+    }),
+    require("26a2cbd1682ba101")(require("1007818c3e43ed6b").getBundleURL("10Mjw") + "productPage.8d6061f1.js" + "?" + Date.now()).catch((err)=>{
+        delete module.bundle.cache[module.id];
+        throw err;
+    })
+]).then(()=>module.bundle.root("kX2P0"));
+
+},{"1e1f24517f945338":"1MWPE","1007818c3e43ed6b":"lgJ39","26a2cbd1682ba101":"61B45"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"2vkXO":[function(require,module,exports) {
+module.exports = Promise.all([
+    require("74d3511b4e45794")(require("dd83398672839c5c").getBundleURL("10Mjw") + "orderPage.159f6fa9.css" + "?" + Date.now()).catch((err)=>{
+        delete module.bundle.cache[module.id];
+        throw err;
+    }),
+    require("b77fbc5a239c36a3")(require("dd83398672839c5c").getBundleURL("10Mjw") + "orderPage.f3b56fcb.js" + "?" + Date.now()).catch((err)=>{
+        delete module.bundle.cache[module.id];
+        throw err;
+    })
+]).then(()=>module.bundle.root("dm60c"));
+
+},{"74d3511b4e45794":"1MWPE","dd83398672839c5c":"lgJ39","b77fbc5a239c36a3":"61B45"}],"dK418":[function(require,module,exports) {
+module.exports = Promise.all([
+    require("8c126dceada85310")(require("472b8756bca5cade").getBundleURL("10Mjw") + "notFoundPage.918bda43.css" + "?" + Date.now()).catch((err)=>{
+        delete module.bundle.cache[module.id];
+        throw err;
+    }),
+    require("95fe5edc076d355d")(require("472b8756bca5cade").getBundleURL("10Mjw") + "notFoundPage.c3afc1d6.js" + "?" + Date.now()).catch((err)=>{
+        delete module.bundle.cache[module.id];
+        throw err;
+    })
+]).then(()=>module.bundle.root("iWf4E"));
+
+},{"8c126dceada85310":"1MWPE","472b8756bca5cade":"lgJ39","95fe5edc076d355d":"61B45"}],"k3piG":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+// Создать шапку
+parcelHelpers.export(exports, "getHeader", ()=>getHeader);
+var _navigationLink = require("../navigationLink/navigationLink");
+var _logo = require("../logo/logo");
+var _basketBtn = require("../basketBtn/basketBtn");
+var _headerCss = require("./header.css");
+function getHeader() {
+    const header = document.createElement("header");
+    header.classList.add("header");
+    const container = document.createElement("div");
+    container.classList.add("container", "header__container");
+    const logo = (0, _logo.getLogo)();
+    logo.classList.add("header__logo");
+    const basketBtn = (0, _basketBtn.getBasketBtn)();
+    const nav = document.createElement("nav");
+    nav.classList.add("header__navigation");
+    const links = {
+        "home": (0, _navigationLink.getNavigationLink)("/", "\u0413\u043B\u0430\u0432\u043D\u0430\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430"),
+        "catalog": (0, _navigationLink.getNavigationLink)("/catalog", "\u041A\u0430\u0442\u0430\u043B\u043E\u0433"),
+        "basket": basketBtn
+    };
+    for(const oneLink in links)nav.append(links[oneLink]);
+    const setActiveLink = function(link = "") {
+        for(const oneLink in links)links[oneLink].classList.remove("active");
+        if (link !== "") links[link].classList.add("active");
+    };
+    container.append(logo, nav, basketBtn);
+    header.append(container);
+    return {
+        header,
+        setActiveLink
+    };
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./header.css":"39x7f","../navigationLink/navigationLink":"9DXZC","../logo/logo":"3UqdW","../basketBtn/basketBtn":"fnQNK"}],"39x7f":[function() {},{}],"9DXZC":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "getNavigationLink", ()=>getNavigationLink);
+var _mainJs = require("../../main.js");
+var _navigationLinkCss = require("./navigationLink.css");
+function getNavigationLink(path, title = "") {
+    let link = document.createElement("a");
+    link.classList.add("navigation__link");
+    link.href = path;
+    link.textContent = title;
+    link.addEventListener("click", function(event) {
+        event.preventDefault();
+        (0, _mainJs.router).navigate(path);
+    });
+    return link;
+}
+
+},{"../../main.js":"1SICI","./navigationLink.css":"arnVZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"arnVZ":[function() {},{}],"3UqdW":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "getLogo", ()=>getLogo);
+var _logoCss = require("./logo.css");
+var _logoSvg = require("../../../assets/img/logo.svg");
+var _logoSvgDefault = parcelHelpers.interopDefault(_logoSvg);
+function getLogo() {
+    const logo = document.createElement("img");
+    logo.classList.add("logo");
+    logo.src = (0, _logoSvgDefault.default);
+    return logo;
+}
+
+},{"./logo.css":"fgPjk","../../../assets/img/logo.svg":"1diId","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"fgPjk":[function() {},{}],"1diId":[function(require,module,exports) {
+module.exports = require("5b3aa14cd0d9bc14").getBundleURL("10Mjw") + "logo.e1e57082.svg" + "?" + Date.now();
+
+},{"5b3aa14cd0d9bc14":"lgJ39"}],"fnQNK":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "getBasketBtn", ()=>getBasketBtn);
+var _basketBtnCss = require("./basketBtn.css");
+var _basketSvg = require("bundle-text:../../../assets/img/basket.svg");
+var _basketSvgDefault = parcelHelpers.interopDefault(_basketSvg);
+var _main = require("../../main");
+function getBasketBtn() {
+    const basketBtn = document.createElement("a");
+    basketBtn.classList.add("basket__btn");
+    basketBtn.href = "/basket";
+    basketBtn.innerHTML = (0, _basketSvgDefault.default);
+    basketBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+        (0, _main.router).navigate("/basket");
+    });
+    return basketBtn;
+}
+
+},{"./basketBtn.css":"c11TG","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","bundle-text:../../../assets/img/basket.svg":"eBoP3","../../main":"1SICI"}],"c11TG":[function() {},{}],"eBoP3":[function(require,module,exports) {
+module.exports = "<svg fill=\"#f98800\" width=\"800px\" height=\"800px\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8.132 2.504 4.42 9H3a1.001 1.001 0 0 0-.965 1.263l2.799 10.263A2.004 2.004 0 0 0 6.764 22h10.473c.898 0 1.692-.605 1.93-1.475l2.799-10.263A.998.998 0 0 0 21 9h-1.42l-3.712-6.496-1.736.992L17.277 9H6.723l3.145-5.504-1.736-.992zM14 13h2v5h-2v-5zm-6 0h2v5H8v-5z\"></path></svg>";
+
+},{}],"ht0nH":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+// Контейнер для страниц
+parcelHelpers.export(exports, "getPageContainer", ()=>getPageContainer);
+var _pageContainerCss = require("./pageContainer.css");
+function getPageContainer() {
+    const main = document.createElement("main");
+    main.classList.add("page-container");
+    return main;
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./pageContainer.css":"cl5cT"}],"cl5cT":[function() {},{}]},["j2YDk","1SICI"], "1SICI", "parcelRequirec8b3")
 
 //# sourceMappingURL=index.18dbc454.js.map

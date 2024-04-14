@@ -43,6 +43,7 @@ body
 
 .btn 
 {
+    display: inline-block;
     color: #fff;
     background-color: #5704f3;
     padding: 15px 30px;
@@ -68,20 +69,6 @@ body
     outline-color: #5704f3;;
 }
 
-.header 
-{
-    background-color: #fff;
-    padding: 10px 0;
-    margin-bottom: 20px;
-}
-
-.navigation
-{
-    display: flex;
-    align-items: center;
-    gap: 30px;
-}
-
 .page 
 {
     background-color: #fff;
@@ -89,42 +76,9 @@ body
     padding-bottom: 20px;
 }
 
-.main-title 
-{
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
 .product-list
 {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-}
-
-.product-list__item
-{
-    display: flex;
-    flex-direction: column;
-    border: 2px solid gray;
-    padding: 20px;
-}
-
-.product-list__title
-{
-    margin-top: 0;
-    font-size: 26px;
-    margin-bottom: 15px;
-}
-
-.product-list__price
-{
-    font-size: 21px;
-    margin-bottom: 15px;
-}
-
-.desc 
-{
-    margin-top: 0;
-    margin-bottom: 0;
 }

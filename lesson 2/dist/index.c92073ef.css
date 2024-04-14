@@ -40,6 +40,7 @@ body {
   outline: 1px solid #0000;
   padding: 15px 30px;
   transition: background-color .3s, outline-color .3s;
+  display: inline-block;
 }
 
 .btn:hover {
@@ -54,55 +55,15 @@ body {
   outline-color: #5704f3;
 }
 
-.header {
-  background-color: #fff;
-  margin-bottom: 20px;
-  padding: 10px 0;
-}
-
-.navigation {
-  align-items: center;
-  gap: 30px;
-  display: flex;
-}
-
 .page {
   background-color: #fff;
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
-.main-title {
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-
 .product-list {
   flex-wrap: wrap;
   gap: 20px;
   display: flex;
-}
-
-.product-list__item {
-  border: 2px solid gray;
-  flex-direction: column;
-  padding: 20px;
-  display: flex;
-}
-
-.product-list__title {
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 26px;
-}
-
-.product-list__price {
-  margin-bottom: 15px;
-  font-size: 21px;
-}
-
-.desc {
-  margin-top: 0;
-  margin-bottom: 0;
 }
 /*# sourceMappingURL=index.c92073ef.css.map */

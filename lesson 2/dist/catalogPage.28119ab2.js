@@ -588,8 +588,8 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Каталог
 parcelHelpers.export(exports, "getCatalogPage", ()=>getCatalogPage);
-var _mainTitleJs = require("../components/mainTitle.js");
-var _descJs = require("../components/desc.js");
+var _mainTitleJs = require("../components/mainTitle/mainTitle.js");
+var _descJs = require("../components/desc/desc.js");
 function getCatalogPage() {
     const page = document.createElement("div");
     page.classList.add("page", "catalog-page", "container");
@@ -599,6 +599,32 @@ function getCatalogPage() {
     return page;
 }
 
-},{"../components/mainTitle.js":"1BNwr","../components/desc.js":"7kCFx","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["aahoF"], null, "parcelRequire9a08")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../components/desc/desc.js":"2aBBT","../components/mainTitle/mainTitle.js":"ki5if"}],"2aBBT":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+// Создаем описание
+parcelHelpers.export(exports, "getDesc", ()=>getDesc);
+var _descCss = require("./desc.css");
+function getDesc(text) {
+    const desc = document.createElement("p");
+    desc.classList.add("desc");
+    desc.textContent = text;
+    return desc;
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./desc.css":"kfYoF"}],"kfYoF":[function() {},{}],"ki5if":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+// Создаем главный заголовок
+parcelHelpers.export(exports, "getMainTitle", ()=>getMainTitle);
+var _mainTitleCss = require("./mainTitle.css");
+function getMainTitle(text) {
+    const title = document.createElement("h1");
+    title.classList.add("main-title");
+    title.textContent = text;
+    return title;
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./mainTitle.css":"8xezA"}],"8xezA":[function() {},{}]},["aahoF"], null, "parcelRequirec8b3")
 
 //# sourceMappingURL=catalogPage.28119ab2.js.map
