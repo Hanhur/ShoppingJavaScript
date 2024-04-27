@@ -625,6 +625,6 @@ function getMainTitle(text) {
     return title;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./mainTitle.css":"8xezA"}],"8xezA":[function() {},{}]},["9pwwF"], null, "parcelRequirec8b3")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./mainTitle.css":"8xezA"}],"8xezA":[function() {},{}]},["9pwwF"], null, "parcelRequirecf9c")
 
 //# sourceMappingURL=orderPage.f3b56fcb.js.map

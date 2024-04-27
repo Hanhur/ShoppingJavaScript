@@ -1,5 +1,6 @@
-import { getProductCard } from "../components/productCard/productCard.js";
 import { getMainTitle } from "../components/mainTitle/mainTitle.js";
+import { getProductList } from "../components/productList/productList.js";
+import { URL } from "../config.js";
 
 // Главная страница
 export function getMainPage()
@@ -9,15 +10,9 @@ export function getMainPage()
 
     const mainTitle = getMainTitle("Главная страница");
 
-    const list = document.createElement("ul");
-    list.classList.add("product-list", "list-reset");
+    const product = getProductList();
+    product.getProducts(`${URL}/wp-json/wp/v1/products?count=4`);
 
-    list.append(
-        getProductCard("Товар_1", 400),
-        getProductCard("Товар_2", 300),
-        getProductCard("Товар_3", 700)
-    );
-
-    page.append(mainTitle, list);
+    page.append(mainTitle, product.productList);
     return page;
 }

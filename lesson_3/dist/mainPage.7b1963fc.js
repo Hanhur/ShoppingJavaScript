@@ -588,20 +588,20 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Главная страница
 parcelHelpers.export(exports, "getMainPage", ()=>getMainPage);
-var _productCardJs = require("../components/productCard/productCard.js");
 var _mainTitleJs = require("../components/mainTitle/mainTitle.js");
+var _productListJs = require("../components/productList/productList.js");
+var _configJs = require("../config.js");
 function getMainPage() {
     const page = document.createElement("div");
     page.classList.add("page", "main-page", "container");
     const mainTitle = (0, _mainTitleJs.getMainTitle)("\u0413\u043B\u0430\u0432\u043D\u0430\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430");
-    const list = document.createElement("ul");
-    list.classList.add("product-list", "list-reset");
-    list.append((0, _productCardJs.getProductCard)("\u0422\u043E\u0432\u0430\u0440_1", 400), (0, _productCardJs.getProductCard)("\u0422\u043E\u0432\u0430\u0440_2", 300), (0, _productCardJs.getProductCard)("\u0422\u043E\u0432\u0430\u0440_3", 700));
-    page.append(mainTitle, list);
+    const product = (0, _productListJs.getProductList)();
+    product.getProducts(`${(0, _configJs.URL)}/wp-json/wp/v1/products?count=4`);
+    page.append(mainTitle, product.productList);
     return page;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../components/mainTitle/mainTitle.js":"ki5if","../components/productCard/productCard.js":"9WzTu"}],"ki5if":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../components/mainTitle/mainTitle.js":"ki5if","../components/productList/productList.js":"lAenc","../config.js":"k5Hzs"}],"ki5if":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Создаем главный заголовок
@@ -614,36 +614,80 @@ function getMainTitle(text) {
     return title;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./mainTitle.css":"8xezA"}],"8xezA":[function() {},{}],"9WzTu":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./mainTitle.css":"8xezA"}],"8xezA":[function() {},{}],"lAenc":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+// Список товаров
+parcelHelpers.export(exports, "getProductList", ()=>getProductList);
+var _productCardJs = require("../productCard/productCard.js");
+var _productListCss = require("./productList.css");
+function getProductList() {
+    const productList = document.createElement("div");
+    productList.classList.add("product-list");
+    const getProducts = async function(URI) {
+        try {
+            const response = await fetch(URI);
+            if (response.status === 404) throw new Error("\u0422\u043E\u0432\u0430\u0440\u044B \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D\u044B");
+            const data = await response.json();
+            const list = document.createElement("ul");
+            list.classList.add("product-list__list");
+            for (const product of data){
+                const productCard = (0, _productCardJs.getProductCard)(product);
+                list.append(productCard);
+            }
+            productList.append(list);
+        } catch (error) {
+            const msg = document.createElement("span");
+            msg.classList.add("products-list__msg");
+            msg.textContent = error.message;
+            productList.append(msg);
+        }
+    };
+    return {
+        productList,
+        getProducts
+    };
+}
+
+},{"./productList.css":"1YWjZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../productCard/productCard.js":"9WzTu"}],"1YWjZ":[function() {},{}],"9WzTu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // Карточка товара
 parcelHelpers.export(exports, "getProductCard", ()=>getProductCard);
 var _mainJs = require("../../main.js");
 var _productCardCss = require("./productCard.css");
-function getProductCard(title, price) {
+function getProductCard(product) {
     const item = document.createElement("li");
-    item.classList.add("product-list__item");
+    item.classList.add("product");
     const productTitle = document.createElement("h2");
-    productTitle.classList.add("product-list__title");
+    productTitle.classList.add("product__title");
+    const productPreview = document.createElement("img");
+    productPreview.classList.add("product__preview");
+    productPreview.src = product.preview;
     let productLink = document.createElement("a");
-    productLink.textContent = title;
+    productLink.textContent = product.title;
     productLink.href = "";
     productLink.addEventListener("click", function(event) {
         event.preventDefault();
-        (0, _mainJs.router).navigate(`/product/${title}`);
+        (0, _mainJs.router).navigate(`/product/${product.id}`);
     });
     productTitle.append(productLink);
     const productPrice = document.createElement("strong");
-    productPrice.classList.add("product-list__price");
-    productPrice.textContent = `${price} \u{440}\u{443}\u{431}`;
+    productPrice.classList.add("product__price");
+    productPrice.textContent = `${product.price} \u{440}\u{443}\u{431}`;
     const addBasket = document.createElement("button");
-    addBasket.classList.add("btn");
+    addBasket.classList.add("btn", "product__add-basket-btn");
     addBasket.textContent = " \u0412 \u043A\u043E\u0440\u0437\u0438\u043D\u0443";
-    item.append(productTitle, productPrice, addBasket);
+    item.append(productPreview, productTitle, productPrice, addBasket);
     return item;
 }
 
-},{"../../main.js":"1SICI","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./productCard.css":"8FtH3"}],"8FtH3":[function() {},{}]},["7jsWq"], null, "parcelRequirec8b3")
+},{"../../main.js":"1SICI","./productCard.css":"8FtH3","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8FtH3":[function() {},{}],"k5Hzs":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "URL", ()=>URL);
+const URL = "https://shop-frontent.ru";
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["7jsWq"], null, "parcelRequirecf9c")
 
 //# sourceMappingURL=mainPage.7b1963fc.js.map

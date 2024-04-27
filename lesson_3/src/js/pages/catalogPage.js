@@ -1,5 +1,6 @@
 import { getMainTitle } from "../components/mainTitle/mainTitle.js";
-import { getDesc } from "../components/desc/desc.js";
+import { getProductList } from "../components/productList/productList.js";
+import { URL } from "../config.js";
 
 // Каталог
 export function getCatalogPage()
@@ -8,8 +9,10 @@ export function getCatalogPage()
     page.classList.add("page", "catalog-page", "container");
 
     const mainTitle = getMainTitle("Каталог");
-    const desc = getDesc("Страница в разработке");
 
-    page.append(mainTitle, desc);
+    const product = getProductList();
+    product.getProducts(`${URL}/wp-json/wp/v1/products`);
+
+    page.append(mainTitle, product.productList);
     return page;
 }
